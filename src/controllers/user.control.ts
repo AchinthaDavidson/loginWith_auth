@@ -1,33 +1,29 @@
-import { Router } from "express";
-import User from "../models/user.models";
+import { Request, Response } from "express";
+import { findUserById, register } from "../services/user.services";
 
-const userRouter = Router();
 
-userRouter.post("/login", (req, res) => {
+// userRouter.post("/login", (req, res) => {});
 
-});
-
-userRouter.post("/register", async (req, res) => {
+export const userRegister= async (req:Request, res:Response) => {
   try {
     // const { fname, lname, password, email } = req.body;
-const lname="Eee"
-const fname="eee"
-const password="eee"
-const email= "<EMAIL>"
+    const lname = "Eee";
+    const fname = "eee";
+    const password = "eee";
+    const email = "<EMAI>kkkll";
 
-    const newUser = new User({
-      fname,
-      lname,
-      password,
-      email,
-    });
+    const existingUser = await findUserById(email);
+    if (existingUser) {
+      return res.status(400).send({
+        err: "User Already Exits",
+      });
+    }
 
-    newUser.save();
-    res.status(201).send(newUser)
-  } catch (err:any) {
-    console.log(err)
-
+    const newUser = await register(email, fname, lname, password);
+    res.status(201).send(newUser);
+  } catch (err: any) {
+    console.log(err);
   }
-});
+}
 
-export default userRouter
+

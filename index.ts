@@ -1,7 +1,8 @@
 import bodyParser from "body-parser";
 import  express  from "express";
 import { connect } from "./src/utils/db";
-import userRouter from "./src/controllers/user.control";
+import userRouter from "./src/routes/user.route";
+
 
 const app= express()
 

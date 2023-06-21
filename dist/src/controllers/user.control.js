@@ -8,33 +8,28 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = require("express");
-const user_models_1 = __importDefault(require("../models/user.models"));
-const userRouter = (0, express_1.Router)();
-userRouter.post("/login", (req, res) => {
-});
-userRouter.post("/register", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.userRegister = void 0;
+const user_services_1 = require("../services/user.services");
+// userRouter.post("/login", (req, res) => {});
+const userRegister = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         // const { fname, lname, password, email } = req.body;
         const lname = "Eee";
         const fname = "eee";
         const password = "eee";
-        const email = "<EMAIL>";
-        const newUser = new user_models_1.default({
-            fname,
-            lname,
-            password,
-            email,
-        });
-        newUser.save();
+        const email = "<EMAI>kkkll";
+        const existingUser = yield (0, user_services_1.findUserById)(email);
+        if (existingUser) {
+            return res.status(400).send({
+                err: "User Already Exits",
+            });
+        }
+        const newUser = yield (0, user_services_1.register)(email, fname, lname, password);
         res.status(201).send(newUser);
     }
     catch (err) {
         console.log(err);
     }
-}));
-exports.default = userRouter;
+});
+exports.userRegister = userRegister;
