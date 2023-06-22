@@ -9,4 +9,8 @@ userRouter.post("/register", (0, validator_1.validate)([
     (0, express_validator_1.body)("email").isEmail(),
     (0, express_validator_1.body)("password").isLength({ min: 5 })
 ]), user_control_1.userRegister);
+userRouter.post("/login", (0, validator_1.validate)([
+    (0, express_validator_1.body)("email").isEmail(),
+    (0, express_validator_1.body)("password").isLength({ min: 5 })
+]), user_control_1.userLogin);
 exports.default = userRouter;

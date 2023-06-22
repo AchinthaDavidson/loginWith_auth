@@ -9,23 +9,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.userRegister = void 0;
-const user_services_1 = require("../services/user.services");
+exports.userLogin = exports.userRegister = void 0;
+const user_service_1 = require("../services/user.service");
 // userRouter.post("/login", (req, res) => {});
 const userRegister = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        // const { fname, lname, password, email } = req.body;
-        const lname = "Eee";
-        const fname = "eee";
-        const password = "eee";
-        const email = "<EMAI>kkkll";
-        const existingUser = yield (0, user_services_1.findUserById)(email);
+        const { fname, lname, password, email } = req.body;
+        const existingUser = yield (0, user_service_1.findUserById)(email);
         if (existingUser) {
             return res.status(400).send({
                 err: "User Already Exits",
             });
         }
-        const newUser = yield (0, user_services_1.register)(email, fname, lname, password);
+        const newUser = yield (0, user_service_1.register)(email, fname, lname, password);
         res.status(201).send(newUser);
     }
     catch (err) {
@@ -33,3 +29,14 @@ const userRegister = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
 });
 exports.userRegister = userRegister;
+const userLogin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { password, email } = req.body;
+        const payload = yield (0, user_service_1.login)(email, password);
+        res.status(200).send(payload);
+    }
+    catch (err) {
+        res.status(400).send({ err: err.massage });
+    }
+});
+exports.userLogin = userLogin;
