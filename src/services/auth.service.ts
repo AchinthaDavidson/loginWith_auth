@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt"
 import jwt, { SignOptions } from "jsonwebtoken"
+import { IauthPayload } from "../extends";
 
 const APP_SECRET='my-app-secret'
 const JWT_OPTIONS:SignOptions={
@@ -17,10 +18,7 @@ export function validatePassword(password:string,hash:string){
   return bcrypt.compare(password,hash)
 }
 
-type IauthPayload={
-  id:string;
-  email:string;
-}
+
 
 export async function signToken( password:string,hash:string,payload:IauthPayload){
 
@@ -35,4 +33,9 @@ export async function signToken( password:string,hash:string,payload:IauthPayloa
     token,
     life:3600,
   }
+}
+
+export async function verifyToken(token:string){
+  const payload=jwt.verify(token,APP_SECRET,JWT_OPTIONS)
+  return payload as IauthPayload;
 }

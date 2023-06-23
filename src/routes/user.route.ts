@@ -1,7 +1,7 @@
 import { body } from "express-validator";
-import { validate } from "../utils/validator";
+import { authGurd, validate } from "../utils/validator";
 import { Router } from "express";
-import { userLogin, userRegister } from "../controllers/user.control";
+import { currentUser, userLogin, userRegister } from "../controllers/user.control";
 
 const userRouter = Router();
 
@@ -15,4 +15,6 @@ userRouter.post("/login", validate([
     body("email").isEmail(),
     body("password").isLength({min:5})
 ]),userLogin)
+
+userRouter.get("/current-user",authGurd,currentUser)
 export default userRouter;

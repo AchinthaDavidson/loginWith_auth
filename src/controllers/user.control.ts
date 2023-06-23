@@ -2,7 +2,25 @@ import { Request, Response } from "express";
 import { findUserById, login, register } from "../services/user.service";
 
 
-// userRouter.post("/login", (req, res) => {});
+export const currentUser= async (req:Request, res:Response) => {
+     const currentUser=req.user;
+     try {
+      if (!currentUser){
+        return res.status(400).send({err:'User not longer in'})
+      }
+
+      const userDoc = await findUserById(currentUser.email);
+      const user=userDoc?.toJOSN();
+      delete user.password;
+  
+      res.status(200).json(user);
+      } catch (err) {
+        res.status(400).send({err:err})
+     }
+
+    
+
+}
 
 export const userRegister= async (req:Request, res:Response) => {
   try {
