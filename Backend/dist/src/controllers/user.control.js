@@ -9,9 +9,26 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.userLogin = exports.userRegister = void 0;
+exports.userLogin = exports.userRegister = exports.currentUser = void 0;
 const user_service_1 = require("../services/user.service");
-// userRouter.post("/login", (req, res) => {});
+const currentUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const currentUser = req.user;
+    try {
+        if (!currentUser) {
+            return res.status(400).send({ err: 'User not longer in' });
+        }
+        const userDoc = yield (0, user_service_1.findUserById)(currentUser.email);
+        console.log(userDoc);
+        // const user=userDoc?.toJOSN()as any;
+        // console.log(user)
+        userDoc === null || userDoc === void 0 ? true : delete userDoc.password;
+        res.status(200).json(userDoc);
+    }
+    catch (err) {
+        res.status(400).send({ err: err });
+    }
+});
+exports.currentUser = currentUser;
 const userRegister = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { fname, lname, password, email } = req.body;

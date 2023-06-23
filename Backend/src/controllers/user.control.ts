@@ -4,16 +4,20 @@ import { findUserById, login, register } from "../services/user.service";
 
 export const currentUser= async (req:Request, res:Response) => {
      const currentUser=req.user;
+     
      try {
       if (!currentUser){
         return res.status(400).send({err:'User not longer in'})
       }
-
+     
       const userDoc = await findUserById(currentUser.email);
-      const user=userDoc?.toJOSN();
-      delete user.password;
+      console.log(userDoc)
+      // const user=userDoc?.toJOSN()as any;
+      // console.log(user)
+      delete userDoc?.password
+      
   
-      res.status(200).json(user);
+      res.status(200).json(userDoc)
       } catch (err) {
         res.status(400).send({err:err})
      }

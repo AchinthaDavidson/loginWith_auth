@@ -17,9 +17,10 @@ export const validate=(validations:ValidationChain[])=>{
 }
 export const authGurd=async (req:Request,res:Response,next:NextFunction)=>{
     const authToken= req.headers['authorization'];
+   
     if(!authToken){
         return res.status(400).send({
-            err:'Forbinderd Resource'
+            err:'Forbinderd Resource1'
         })
 
     }
@@ -27,6 +28,7 @@ export const authGurd=async (req:Request,res:Response,next:NextFunction)=>{
     try{
         const playload=await verifyToken(authToken.split('Bearer ')[1]); 
         req.user=playload
+       
         next()
     }catch(err){
         return res.status(400).send({

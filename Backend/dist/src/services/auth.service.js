@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.signToken = exports.validatePassword = exports.createPasswordHash = void 0;
+exports.verifyToken = exports.signToken = exports.validatePassword = exports.createPasswordHash = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const APP_SECRET = 'my-app-secret';
@@ -44,3 +44,10 @@ function signToken(password, hash, payload) {
     });
 }
 exports.signToken = signToken;
+function verifyToken(token) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const payload = jsonwebtoken_1.default.verify(token, APP_SECRET, JWT_OPTIONS);
+        return payload;
+    });
+}
+exports.verifyToken = verifyToken;

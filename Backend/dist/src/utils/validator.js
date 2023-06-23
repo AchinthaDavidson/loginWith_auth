@@ -9,8 +9,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validate = void 0;
+exports.authGurd = exports.validate = void 0;
 const express_validator_1 = require("express-validator");
+const auth_service_1 = require("../services/auth.service");
 const validate = (validations) => {
     return (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         yield Promise.all(validations.map(validation => validation.run(req)));
@@ -22,3 +23,22 @@ const validate = (validations) => {
     });
 };
 exports.validate = validate;
+const authGurd = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const authToken = req.headers['authorization'];
+    if (!authToken) {
+        return res.status(400).send({
+            err: 'Forbinderd Resource1'
+        });
+    }
+    try {
+        const playload = yield (0, auth_service_1.verifyToken)(authToken.split('Bearer ')[1]);
+        req.user = playload;
+        next();
+    }
+    catch (err) {
+        return res.status(400).send({
+            err: 'Forbinderd Resource'
+        });
+    }
+});
+exports.authGurd = authGurd;
